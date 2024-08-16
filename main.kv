@@ -1,0 +1,121 @@
+<NewButton@MDRoundFlatIconButton>
+    text: ''
+
+MDBoxLayout:
+    
+    orientation: 'vertical'
+
+    MDToolbar:
+        title: "Youtube downloader"
+        left_action_items: [['menu', lambda x: None]]
+        elevation: 10
+
+    MDFloatLayout:
+        id: principal_layout
+
+        MDRoundFlatIconButton:
+            text: "Escoger ubicación"
+            icon: "folder"
+            pos_hint: {'center_x': .5, 'center_y': .25}
+            on_release: app.file_manager_open()
+        
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: (card.width+90,insert.height)
+            pos_hint:{'center_x': .5, 'center_y': .35}
+
+            MDTextField:
+                id: text_entry_url
+                hint_text: "Helper text on focus"
+                helper_text: "This will disappear when you click off"
+                helper_text_mode: "on_focus"
+                on_text_validate: app.insert_video(self.text)
+              
+
+            MDRectangleFlatButton:
+                id: insert
+                text: 'Insertar video'
+                on_press: app.insert_video(text_entry_url.text)
+        
+        MDProgressBar:
+            id: progress_bar
+            value: 0
+            pos_hint: {'center_x': .5, 'center_y': .15}
+            size_hint: None, None
+            width: 400
+        
+        MDLabel:
+            id: text_download
+            text: ''
+            size_hint: None, None
+            width:
+            pos_hint: {'center_x': .5, 'center_y': .2}
+
+
+        
+        MDCard:
+            id: card
+            orientation: 'vertical'
+            focus_behavior: True
+            ripple_behavior: True
+            minimum_hight: 100
+            minimum_widht: 200
+            width: principal_layout.width*app.ratio_card
+            height: self.width/1.36
+            size_hint: None, None
+            pos_hint: {"center_x": .5, "center_y": .7}
+
+            MDBoxLayout:
+                orientation: 'vertical'
+
+                MDFloatLayout:
+                    id: video
+                    size_hint:1,.9
+                    
+
+                    FitImage:
+                        id: image
+                        source:''
+                        pos: video.pos
+                    
+                    MDFloatingActionButton:
+                        icon: "cog-outline"
+                        md_bg_color: app.theme_cls.primary_color
+                        elevation_normal: 10
+                        pos: video.pos
+                    
+                    MDFloatingActionButton:
+                        icon: "download"
+                        md_bg_color: app.theme_cls.primary_color
+                        elevation_normal: 10
+                        pos: (video.pos[0]+video.size[0]-self.size[0],video.pos[1])
+                        on_press: app.download()
+                    
+                    MDSpinner:
+                        id: spinner
+                        size_hint: None, None
+                        size: dp(46), dp(46)
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        active: True if text_entry_url.text and image.source == '' else False
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, .1
+
+                    MDLabel:
+                        id: title
+                        halign: "center"
+                        font_style: "Caption"
+                        text:''
+
+                    MDLabel:
+                        id: duration
+                        font_style: "Caption"
+                        text:''
+                    
+
+
+                    
+
+
